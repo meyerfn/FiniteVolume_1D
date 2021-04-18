@@ -1,0 +1,1 @@
+ADD_SUBDIRECTORY(${LIB_DIR}/googletest)
