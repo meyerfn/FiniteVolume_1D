@@ -7,7 +7,7 @@ project(FV1d)
 set(CMAKE_CXX_STANDARD 14)
 # Let's nicely support folders in IDE's
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
+enable_testing()
 # specify some helper variables
 set(SOURCE_DIR "${PROJECT_SOURCE_DIR}/src")
 set(LIB_DIR "${PROJECT_SOURCE_DIR}/lib")
