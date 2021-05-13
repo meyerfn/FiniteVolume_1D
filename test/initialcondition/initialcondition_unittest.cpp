@@ -7,7 +7,6 @@ using namespace ::testing;
 class InitialConditionTest : public Test
 {
 public:
-    InitialConditionTest() : meshpoints(numberOfMeshpoints, 0.F) {}
     void SetUp() override
     {
         float meshwidth = 0.25F;
@@ -17,7 +16,7 @@ public:
         }
     }
     static constexpr int numberOfMeshpoints = 5;
-    std::vector<float> meshpoints;
+    std::vector<float> meshpoints = std::vector<float>(numberOfMeshpoints, 0.F) ;
 };
 
 TEST_F(InitialConditionTest, TEST)
