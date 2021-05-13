@@ -3,24 +3,28 @@
 #include <iostream>
 #define assertm(exp, msg) assert(((void)msg, exp))
 
-Mesh::Mesh(unsigned int numberOfCells, float leftBoundary, float rightBoundary) : numberOfCells(numberOfCells), leftBoundary(leftBoundary), rightBoundary(rightBoundary)
+Mesh::Mesh(unsigned int numberOfCells, float leftBoundary, float rightBoundary)
+    : m_numberOfCells(numberOfCells), m_leftBoundary(leftBoundary),
+      m_rightBoundary(rightBoundary)
 {
-    assertm(leftBoundary < rightBoundary, "Left boundary has to be smaller than right boundary");
-    h = (rightBoundary - leftBoundary) / numberOfCells;
-    createMeshPoints();
+    assertm(m_leftBoundary < m_rightBoundary,
+            "Left boundary has to be smaller than right boundary");
+    m_h = (m_rightBoundary - m_leftBoundary) / m_numberOfCells;
+    createMidPointsOfMesh();
     createGhostPoints();
 }
 
-void Mesh::createMeshPoints()
+void Mesh::createMidPointsOfMesh()
 {
-    for (size_t i = 0; i < numberOfCells; ++i)
+    m_midPointMesh.push_back(m_leftBoundary + m_h / 2.);
+    for (size_t i = 1; i < m_numberOfCells; ++i)
     {
-        meshPoints.push_back(leftBoundary + h * i);
+        m_midPointMesh.push_back(m_leftBoundary + m_h * i + m_h / 2.);
     }
 }
 
-void Mesh::createGhostPoints(){
-    ghostPoints.push_back(leftBoundary - h);
-    ghostPoints.push_back(rightBoundary + h);
+void Mesh::createGhostPoints()
+{
+    m_ghostPoints.push_back(m_leftBoundary - m_h);
+    m_ghostPoints.push_back(m_rightBoundary + m_h);
 }
-

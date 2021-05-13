@@ -1,4 +1,4 @@
-#include "../../src/boundaryCondition/dirichletBoundaryCondition.hpp"
+#include "../../src/boundarycondition/dirichletBoundarycondition.hpp"
 #include "../../src/riemann/upwindRiemann.hpp"
 #include "gmock/gmock.h"
 #include <numeric>
@@ -8,36 +8,38 @@ using namespace ::testing;
 class UpwindRiemannTest : public Test
 {
 public:
-    void SetUp() { solution = std::vector<float>(numberOfCells, 0.); }
-    void fillVectorWithIncreasingNumbers()
+    void fillSolutionWithIncreasingNumbers()
     {
-        std::iota(solution.begin(), solution.end(), 1.);
+        std::iota(m_testSolution.begin(), m_testSolution.end(), 1.);
     }
 
-    int numberOfCells = 20;
-    std::vector<float> solution;
-    DirichletBoundaryCondition dirichlet{};
-    const float advectionVelocity = 1.;
-    UpwindRiemann upwind{
-        advectionVelocity,
-        std::make_unique<DirichletBoundaryCondition>(dirichlet)};
+    int m_testNumberOfCells = 20;
+    std::vector<float> m_testSolution =
+        std::vector<float>(m_testNumberOfCells, 0.);
+    DirichletBoundarycondition m_testDirichlet{};
+    const float m_testAdvectionVelocity = 1.;
+    UpwindRiemann m_testUpwind{
+        m_testAdvectionVelocity,
+        std::make_unique<DirichletBoundarycondition>(m_testDirichlet)};
 };
 
 TEST_F(UpwindRiemannTest, IfZeroSolutionFluxIsZero)
 {
-    std::vector<float> numericalFlux = upwind.computeFlux(solution);
-    ASSERT_THAT(numericalFlux, ElementsAreArray(solution));
+    std::vector<float> numericalFlux =
+        m_testUpwind.computeSurfaceIntegral(m_testSolution);
+    ASSERT_THAT(numericalFlux, ElementsAreArray(m_testSolution));
 };
 
 TEST_F(UpwindRiemannTest, CorrectFluxWithCorrectDirichletBoundaryCondition)
 {
-    fillVectorWithIncreasingNumbers();
-    std::vector<float> numericalFlux = upwind.computeFlux(solution);
+    fillSolutionWithIncreasingNumbers();
+    std::vector<float> numericalFlux =
+        m_testUpwind.computeSurfaceIntegral(m_testSolution);
 
-    std::vector<float> expectedFlux(numberOfCells, 0.);
-    std::iota(expectedFlux.begin(), expectedFlux.end(), 1.);
-    expectedFlux[0]= 0.;
-    expectedFlux[numberOfCells -1 ]= 0.;
+    std::vector<float> expectedFlux(m_testNumberOfCells, 1.);
+    std::transform(
+        expectedFlux.begin(), expectedFlux.end(), expectedFlux.begin(),
+        [this](auto& elem) { return elem * m_testAdvectionVelocity; });
 
     ASSERT_THAT(numericalFlux, ElementsAreArray(expectedFlux));
 };

@@ -1,21 +1,28 @@
 #ifndef UPWINDRIEMANN_HPP
 #define UPWINDRIEMANN_HPP
 #include "abstractRiemann.hpp"
+#include <tuple>
 
 class UpwindRiemann : public AbstractRiemann
 {
 public:
     UpwindRiemann(float advectionVelocity,
-                  std::unique_ptr<AbstractBoundaryCondition> bc);
+                  std::unique_ptr<AbstractBoundarycondition> bc);
     ~UpwindRiemann();
     std::vector<float>
-    computeFlux(const std::vector<float>& solutionVector) override;
+    computeSurfaceIntegral(const std::vector<float>& solutionVector) override;
 
 private:
-    std::vector<float>
-    computeInteriorFlux(const std::vector<float>& solutionVector);
-    std::vector<float>
-    computeBoundaryFlux(const std::vector<float>& solutionVector);
+    std::tuple<std::vector<float>, std::vector<float>>
+    computeBoundaryFluxes(const std::vector<float>& solutionVector);
+
+    void fillInnerValues(const std::vector<float>& solution,
+                         std::vector<float>& leftCellValues,
+                         std::vector<float>& rightCellValues);
+
+    void fillValuesAtBoundaries(const std::vector<float>& solution,
+                                std::vector<float>& leftCellValues,
+                                std::vector<float>& rightCellValues);
 };
 
 #endif // UPWINDRIEMANN_HPP

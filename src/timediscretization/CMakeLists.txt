@@ -6,4 +6,4 @@ target_sources(TimeDiscretization
     abstractTimeDiscretization.cpp
     abstractTimeDiscretization.hpp
 )
-target_link_libraries(TimeDiscretization Riemann BoundaryConditions) 
+target_link_libraries(TimeDiscretization Riemann Boundaryconditions) 

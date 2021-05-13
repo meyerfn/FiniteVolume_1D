@@ -5,24 +5,18 @@ class Mesh
 {
 public:
     Mesh(unsigned int numberOfCells, float leftBoundary, float rightBoundary);
-    float getMeshWidth() const
-    {
-        return h;
-    }
-    std::vector<float> getMeshPoints() const
-    {
-        return meshPoints;
-    }
+    float getMeshWidth() const { return m_h; }
+    std::vector<float> getMidPointsOfMesh() const { return m_midPointMesh; }
 
 private:
-    void createMeshPoints();
+    void createMidPointsOfMesh();
     void createGhostPoints();
-    float numberOfCells;
-    float leftBoundary;
-    float rightBoundary;
-    float h;
-    std::vector<float> meshPoints;
-    std::vector<float> ghostPoints;
+    float m_numberOfCells;
+    float m_leftBoundary;
+    float m_rightBoundary;
+    float m_h;
+    std::vector<float> m_midPointMesh;
+    std::vector<float> m_ghostPoints;
 };
 
-#endif //MESH_HPP
+#endif // MESH_HPP

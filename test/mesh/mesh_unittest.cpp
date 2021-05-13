@@ -1,5 +1,5 @@
-#include "gmock/gmock.h"
 #include "../../src/mesh/mesh.hpp"
+#include "gmock/gmock.h"
 
 using namespace ::testing;
 
@@ -11,7 +11,7 @@ protected:
         auto h = (rightBoundary - leftBoundary) / numberOfCells;
         for (size_t i = 0; i < numberOfCells; ++i)
         {
-            expectedMeshPoints.push_back(leftBoundary + h * i);
+            expectedMeshPoints.push_back(leftBoundary + h / 2. + (h * i));
         }
     }
     unsigned int numberOfCells = 20U;
@@ -31,5 +31,6 @@ TEST_F(MeshTest, IfMeshPointsAreComputedCorrectly)
 {
     fillExpectedMeshPoints();
     Mesh mesh{numberOfCells, leftBoundary, rightBoundary};
-    ASSERT_THAT(mesh.getMeshPoints(), ElementsAreArray(expectedMeshPoints));
+    ASSERT_THAT(mesh.getMidPointsOfMesh(),
+                ElementsAreArray(expectedMeshPoints));
 };

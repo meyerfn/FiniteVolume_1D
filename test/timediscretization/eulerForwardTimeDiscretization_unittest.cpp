@@ -1,5 +1,5 @@
+#include "../../src/boundarycondition/dirichletBoundarycondition.hpp"
 #include "../../src/timediscretization/eulerForwardTimeDiscretization.hpp"
-#include "../../src/boundaryCondition/dirichletBoundaryCondition.hpp"
 #include "gmock/gmock.h"
 
 using namespace ::testing;
@@ -7,8 +7,10 @@ using namespace ::testing;
 class RiemannMock : public AbstractRiemann
 {
 public:
-    RiemannMock() : AbstractRiemann(1.0F, std::make_unique<DirichletBoundaryCondition>()){};
-    MOCK_METHOD(std::vector<float>, computeFlux,
+    RiemannMock()
+        : AbstractRiemann(1.0F,
+                          std::make_unique<DirichletBoundarycondition>()){};
+    MOCK_METHOD(std::vector<float>, computeSurfaceIntegral,
                 (const std::vector<float>& solutionVector), (override));
 };
 
@@ -16,6 +18,7 @@ class EulerForwardTest : public Test
 {
 protected:
     float m_testDeltaT = 0.1F;
+    unsigned int m_testNumberOfTimesteps = 10;
 };
 
 TEST_F(EulerForwardTest, PerformOneTimeStep)
@@ -23,12 +26,12 @@ TEST_F(EulerForwardTest, PerformOneTimeStep)
     auto riemann = std::make_unique<RiemannMock>();
     std::vector<float> solutionVector{1.F};
     auto expectedSolution = solutionVector[0] + 0.1F * solutionVector[0];
-    ON_CALL(*riemann, computeFlux(solutionVector))
+    ON_CALL(*riemann, computeSurfaceIntegral(solutionVector))
         .WillByDefault(testing::Invoke(
             [](std::vector<float> solutionVector) { return solutionVector; }));
 
     EulerForwardTimeDiscretization m_testEulerForwardTimeDisc(
-        m_testDeltaT, std::move(riemann));
+        m_testDeltaT, m_testNumberOfTimesteps, std::move(riemann));
     m_testEulerForwardTimeDisc.timestep(solutionVector);
 
     ASSERT_THAT(solutionVector, Each(expectedSolution));

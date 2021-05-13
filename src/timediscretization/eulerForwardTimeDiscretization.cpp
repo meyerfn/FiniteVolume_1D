@@ -2,15 +2,16 @@
 #include <algorithm>
 
 EulerForwardTimeDiscretization::EulerForwardTimeDiscretization(
-    float deltaT, std::unique_ptr<AbstractRiemann> riemann)
-    : AbstractTimeDiscretization(deltaT, std::move(riemann))
+    float deltaT, unsigned int numberOfTimesteps,
+    std::unique_ptr<AbstractRiemann> riemann)
+    : AbstractTimeDiscretization(deltaT, numberOfTimesteps, std::move(riemann))
 {
 }
 
 void EulerForwardTimeDiscretization::timestep(
     std::vector<float>& solutionVector)
 {
-    auto flux = m_riemann->computeFlux(solutionVector);
+    auto flux = m_riemann->computeSurfaceIntegral(solutionVector);
     std::transform(flux.begin(), flux.end(), flux.begin(), [this](float flux) {
         return flux * EulerForwardTimeDiscretization::m_deltaT;
     });

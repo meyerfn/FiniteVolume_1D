@@ -1,6 +1,6 @@
 #ifndef ABSTRACTRIEMANN_HPP
 #define ABSTRACTRIEMANN_HPP
-#include "../boundaryCondition/abstractBoundaryCondition.hpp"
+#include "../boundarycondition/abstractBoundarycondition.hpp"
 #include <memory>
 #include <vector>
 
@@ -8,18 +8,18 @@ class AbstractRiemann
 {
 public:
     AbstractRiemann(float advectionVelocity,
-                    std::unique_ptr<AbstractBoundaryCondition> bc)
+                    std::unique_ptr<AbstractBoundarycondition> bc)
         : m_advectionVelocity(advectionVelocity),
-          m_boundaryCondition(std::move(bc))
+          m_boundarycondition(std::move(bc))
     {
     }
     virtual ~AbstractRiemann() = default;
     virtual std::vector<float>
-    computeFlux(const std::vector<float>& solutionVector) = 0;
+    computeSurfaceIntegral(const std::vector<float>& solutionVector) = 0;
 
 protected:
     float m_advectionVelocity;
-    std::unique_ptr<AbstractBoundaryCondition> m_boundaryCondition;
+    std::unique_ptr<AbstractBoundarycondition> m_boundarycondition;
 };
 
 #endif // ABSTRACTRIEMANN_HPP
