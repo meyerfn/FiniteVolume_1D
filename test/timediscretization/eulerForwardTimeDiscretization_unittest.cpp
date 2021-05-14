@@ -8,7 +8,7 @@ class RiemannMock : public AbstractRiemann
 {
 public:
     RiemannMock()
-        : AbstractRiemann(1.0F,
+        : AbstractRiemann(1.0F, 0.5F,
                           std::make_unique<DirichletBoundarycondition>()){};
     MOCK_METHOD(std::vector<float>, computeSurfaceIntegral,
                 (const std::vector<float>& solutionVector), (override));
@@ -25,7 +25,9 @@ TEST_F(EulerForwardTest, PerformOneTimeStep)
 {
     auto riemann = std::make_unique<RiemannMock>();
     std::vector<float> solutionVector{1.F};
-    auto expectedSolution = solutionVector[0] + 0.1F * solutionVector[0];
+    auto expectedSolution =
+        solutionVector[0] + m_testDeltaT * solutionVector[0];
+
     ON_CALL(*riemann, computeSurfaceIntegral(solutionVector))
         .WillByDefault(testing::Invoke(
             [](std::vector<float> solutionVector) { return solutionVector; }));

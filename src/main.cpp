@@ -12,7 +12,7 @@ int main()
               Parameters::SimulationParameters::rightBoundary);
     DirichletBoundarycondition bc{};
     auto riemann = std::make_unique<UpwindRiemann>(
-        Parameters::EquationParameters::advectionVelocity,
+        Parameters::EquationParameters::advectionVelocity, mesh.getMeshWidth(),
         std::make_unique<DirichletBoundarycondition>(bc));
     EulerForwardTimeDiscretization timeDiscretization(
         Parameters::SimulationParameters::determineDeltaT(),
@@ -20,7 +20,8 @@ int main()
         std::move(riemann));
     auto solution =
         InitialCondition::rectangularPulse(mesh.getMidPointsOfMesh());
-    for (int i = 0; i < 100; ++i)
+    auto numberOfTimesteps = timeDiscretization.getNumberOfTimesteps();
+    for (int i = 0; i < timeDiscretization.getNumberOfTimesteps(); ++i)
     {
         timeDiscretization.timestep(solution);
     }

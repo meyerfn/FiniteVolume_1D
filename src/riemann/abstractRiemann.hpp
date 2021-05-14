@@ -7,9 +7,9 @@
 class AbstractRiemann
 {
 public:
-    AbstractRiemann(float advectionVelocity,
+    AbstractRiemann(float advectionVelocity, float meshWidth,
                     std::unique_ptr<AbstractBoundarycondition> bc)
-        : m_advectionVelocity(advectionVelocity),
+        : m_advectionVelocity(advectionVelocity), m_meshWidth(meshWidth),
           m_boundarycondition(std::move(bc))
     {
     }
@@ -19,6 +19,7 @@ public:
 
 protected:
     float m_advectionVelocity;
+    float m_meshWidth;
     std::unique_ptr<AbstractBoundarycondition> m_boundarycondition;
 };
 

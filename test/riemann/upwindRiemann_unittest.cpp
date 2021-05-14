@@ -18,8 +18,9 @@ public:
         std::vector<float>(m_testNumberOfCells, 0.);
     DirichletBoundarycondition m_testDirichlet{};
     const float m_testAdvectionVelocity = 1.;
+    const float m_testMeshWidth = 0.5;
     UpwindRiemann m_testUpwind{
-        m_testAdvectionVelocity,
+        m_testAdvectionVelocity, m_testMeshWidth,
         std::make_unique<DirichletBoundarycondition>(m_testDirichlet)};
 };
 
@@ -36,10 +37,11 @@ TEST_F(UpwindRiemannTest, CorrectFluxWithCorrectDirichletBoundaryCondition)
     std::vector<float> numericalFlux =
         m_testUpwind.computeSurfaceIntegral(m_testSolution);
 
-    std::vector<float> expectedFlux(m_testNumberOfCells, 1.);
-    std::transform(
-        expectedFlux.begin(), expectedFlux.end(), expectedFlux.begin(),
-        [this](auto& elem) { return elem * m_testAdvectionVelocity; });
+    std::vector<float> expectedFlux(m_testNumberOfCells, -1.);
+    std::transform(expectedFlux.begin(), expectedFlux.end(),
+                   expectedFlux.begin(), [this](auto& elem) {
+                       return elem * m_testAdvectionVelocity * m_testMeshWidth;
+                   });
 
     ASSERT_THAT(numericalFlux, ElementsAreArray(expectedFlux));
 };

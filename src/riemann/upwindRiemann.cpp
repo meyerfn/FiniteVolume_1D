@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <functional>
 
-UpwindRiemann::UpwindRiemann(float advectionVelocity,
+UpwindRiemann::UpwindRiemann(float advectionVelocity, float meshWidth,
                              std::unique_ptr<AbstractBoundarycondition> bc)
-    : AbstractRiemann(advectionVelocity, std::move(bc))
+    : AbstractRiemann(advectionVelocity, meshWidth, std::move(bc))
 {
 }
 UpwindRiemann::~UpwindRiemann() {}
@@ -19,6 +19,9 @@ UpwindRiemann::computeSurfaceIntegral(const std::vector<float>& solutionVector)
     std::transform(rightCellValues.begin(), rightCellValues.end(),
                    leftCellValues.begin(), surfaceintegral.begin(),
                    std::minus<float>());
+    std::transform(surfaceintegral.begin(), surfaceintegral.end(),
+                   surfaceintegral.begin(),
+                   [this](float elem) { return -1. * elem * m_meshWidth; });
     return surfaceintegral;
 }
 

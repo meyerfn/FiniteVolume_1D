@@ -6,7 +6,7 @@
 class UpwindRiemann : public AbstractRiemann
 {
 public:
-    UpwindRiemann(float advectionVelocity,
+    UpwindRiemann(float advectionVelocity, float meshWidth,
                   std::unique_ptr<AbstractBoundarycondition> bc);
     ~UpwindRiemann();
     std::vector<float>

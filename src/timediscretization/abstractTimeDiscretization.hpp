@@ -10,6 +10,10 @@ public:
                                std::unique_ptr<AbstractRiemann> riemann);
     virtual ~AbstractTimeDiscretization() = default;
     virtual void timestep(std::vector<float>& solutionVector) = 0;
+    virtual unsigned int getNumberOfTimesteps() const
+    {
+        return m_numberOfTimesteps;
+    }
 
 protected:
     std::unique_ptr<AbstractRiemann> m_riemann;
