@@ -24,7 +24,7 @@ protected:
 TEST_F(EulerForwardTest, PerformOneTimeStep)
 {
     auto riemann = std::make_unique<RiemannMock>();
-    std::vector<float> solutionVector{1.F};
+    std::vector<float> solutionVector{1.};
     auto expectedSolution =
         solutionVector[0] + m_testDeltaT * solutionVector[0];
 

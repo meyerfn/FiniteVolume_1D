@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(${LIB_DIR}/googletest)
+add_subdirectory(googletest)

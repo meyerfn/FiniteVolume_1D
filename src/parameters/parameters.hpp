@@ -14,9 +14,9 @@ static constexpr float advectionVelocity = 1.;
 namespace SimulationParameters
 {
 static constexpr float leftBoundary = 0.;
-static constexpr float rightBoundary = 4.;
+static constexpr float rightBoundary = 2.;
 static constexpr unsigned int numberOfCells = 512;
-static constexpr float finalComputationTime = 4.0;
+static constexpr float finalComputationTime = 1.0;
 
 constexpr float determineDeltaT()
 {

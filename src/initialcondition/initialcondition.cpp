@@ -9,11 +9,11 @@ InitialCondition::rectangularPulse(std::vector<float> meshpoints)
     {
         if (elem + 0.5 * meshWidth >= 0.25F && elem - 0.5 * meshWidth <= 0.5F)
         {
-            initialcondition.push_back(1.F);
+            initialcondition.push_back(1.);
         }
         else
         {
-            initialcondition.push_back(0.F);
+            initialcondition.push_back(0.);
         }
     }
     return initialcondition;

@@ -15,13 +15,13 @@ UpwindRiemann::computeSurfaceIntegral(const std::vector<float>& solutionVector)
     auto boundaryFluxes = computeBoundaryFluxes(solutionVector);
     auto leftCellValues = std::get<0>(boundaryFluxes);
     auto rightCellValues = std::get<1>(boundaryFluxes);
-    std::vector<float> surfaceintegral(solutionVector.size(), 0.F);
+    std::vector<float> surfaceintegral(solutionVector.size(), 0.);
     std::transform(rightCellValues.begin(), rightCellValues.end(),
                    leftCellValues.begin(), surfaceintegral.begin(),
                    std::minus<float>());
-    std::transform(surfaceintegral.begin(), surfaceintegral.end(),
-                   surfaceintegral.begin(),
-                   [this](float elem) { return -1. * elem * m_meshWidth; });
+    std::transform(
+        surfaceintegral.begin(), surfaceintegral.end(), surfaceintegral.begin(),
+        [this](float elem) { return -1. * elem * (1. / m_meshWidth); });
     return surfaceintegral;
 }
 
