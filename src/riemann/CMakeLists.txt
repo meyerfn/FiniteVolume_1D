@@ -5,4 +5,4 @@ target_sources(Riemann
         upwindRiemann.hpp
         abstractRiemann.hpp
 )
-target_link_libraries(Riemann Boundaryconditions)
+target_link_libraries(Riemann AdvectionEquation)

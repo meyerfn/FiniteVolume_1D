@@ -1,4 +1,5 @@
 #include "boundarycondition/dirichletBoundarycondition.hpp"
+#include "equation/advectionEquation/advectionEquation.hpp"
 #include "initialcondition/initialcondition.hpp"
 #include "mesh/mesh.hpp"
 #include "parameters/parameters.hpp"
@@ -13,24 +14,23 @@ int main()
               Parameters::SimulationParameters::rightBoundary);
     DirichletBoundarycondition bc{};
     auto riemann = std::make_unique<UpwindRiemann>(
-        Parameters::EquationParameters::advectionVelocity, mesh.getMeshWidth(),
-        std::make_unique<DirichletBoundarycondition>(bc));
-    EulerForwardTimeDiscretization timeDiscretization(
-        Parameters::SimulationParameters::determineDeltaT(),
-        Parameters::SimulationParameters::determineNumberOfTimesteps(),
-        std::move(riemann));
-    auto solution =
-        InitialCondition::rectangularPulse(mesh.getMidPointsOfMesh());
-    auto numberOfTimesteps = timeDiscretization.getNumberOfTimesteps();
-    for (int i = 0; i < timeDiscretization.getNumberOfTimesteps(); ++i)
-    {
-        timeDiscretization.timestep(solution);
-    }
-    std::ofstream file;
-    file.open("example.txt", std::fstream::out);
-    for (int i = 0; i < solution.size(); ++i)
-    {
-        file << solution[i] << std::endl;
-    }
-    file.close();
+        std::unique_ptr<AdvectionEquation>(new AdvectionEquation(1.0)));
+    // EulerForwardTimeDiscretization timeDiscretization(
+    //     Parameters::SimulationParameters::determineDeltaT(),
+    //     Parameters::SimulationParameters::determineNumberOfTimesteps(),
+    //     std::move(riemann));
+    // auto solution =
+    //     InitialCondition::rectangularPulse(mesh.getMidPointsOfMesh());
+    // auto numberOfTimesteps = timeDiscretization.getNumberOfTimesteps();
+    // for (int i = 0; i < timeDiscretization.getNumberOfTimesteps(); ++i)
+    // {
+    //     timeDiscretization.timestep(solution);
+    // }
+    // std::ofstream file;
+    // file.open("example.txt", std::fstream::out);
+    // for (int i = 0; i < solution.size(); ++i)
+    // {
+    //     file << solution[i] << std::endl;
+    // }
+    // file.close();
 }

@@ -10,8 +10,10 @@ public:
     RiemannMock()
         : AbstractRiemann(1.0F, 0.5F,
                           std::make_unique<DirichletBoundarycondition>()){};
-    MOCK_METHOD(std::vector<float>, computeSurfaceIntegral,
-                (const std::vector<float>& solutionVector), (override));
+    MOCK_METHOD(std::vector<float>, numericalFlux,
+                (const std::vector<float>& solutionVector,
+                 const std::vector<float>& solutionVector),
+                (override));
 };
 
 class EulerForwardTest : public Test
@@ -28,8 +30,8 @@ TEST_F(EulerForwardTest, PerformOneTimeStep)
     auto expectedSolution =
         solutionVector[0] + m_testDeltaT * solutionVector[0];
 
-    ON_CALL(*riemann, computeSurfaceIntegral(solutionVector))
-        .WillByDefault(testing::Invoke(
+    ON_CALL(*riemann, numericalFlux(solutionVector, solutionVector))
+        .WillByDefault(Invoke(
             [](std::vector<float> solutionVector) { return solutionVector; }));
 
     EulerForwardTimeDiscretization m_testEulerForwardTimeDisc(

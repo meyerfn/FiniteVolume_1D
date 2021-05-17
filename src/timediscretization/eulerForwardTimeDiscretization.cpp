@@ -11,7 +11,7 @@ EulerForwardTimeDiscretization::EulerForwardTimeDiscretization(
 void EulerForwardTimeDiscretization::timestep(
     std::vector<float>& solutionVector)
 {
-    auto flux = m_riemann->computeSurfaceIntegral(solutionVector);
+    auto flux = m_riemann->numericalFlux(solutionVector, solutionVector);
     std::transform(flux.begin(), flux.end(), flux.begin(), [this](float elem) {
         return elem * EulerForwardTimeDiscretization::m_deltaT;
     });

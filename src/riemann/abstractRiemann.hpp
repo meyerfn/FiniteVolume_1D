@@ -1,26 +1,25 @@
 #ifndef ABSTRACTRIEMANN_HPP
 #define ABSTRACTRIEMANN_HPP
-#include "../boundarycondition/abstractBoundarycondition.hpp"
+#include "../equation/abstractEquation.hpp"
 #include <memory>
 #include <vector>
+
+class AbstractEquation;
 
 class AbstractRiemann
 {
 public:
-    AbstractRiemann(float advectionVelocity, float meshWidth,
-                    std::unique_ptr<AbstractBoundarycondition> bc)
-        : m_advectionVelocity(advectionVelocity), m_meshWidth(meshWidth),
-          m_boundarycondition(std::move(bc))
+    AbstractRiemann(std::unique_ptr<AbstractEquation> equation)
+        : m_equation(std::move(equation))
     {
     }
     virtual ~AbstractRiemann() = default;
     virtual std::vector<float>
-    computeSurfaceIntegral(const std::vector<float>& solutionVector) = 0;
+    numericalFlux(const std::vector<float>& leftCellValues,
+                  const std::vector<float>& rightCellValues) const = 0;
 
 protected:
-    float m_advectionVelocity;
-    float m_meshWidth;
-    std::unique_ptr<AbstractBoundarycondition> m_boundarycondition;
+    std::unique_ptr<AbstractEquation> m_equation;
 };
 
 #endif // ABSTRACTRIEMANN_HPP
