@@ -2,7 +2,7 @@
 #define PARAMETERS_HPP
 namespace Parameters
 {
-enum class BoundaryConditions
+enum class Boundarycondition
 {
     Dirichlet,
     Upwind

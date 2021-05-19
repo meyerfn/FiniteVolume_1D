@@ -1,18 +1,21 @@
 #ifndef SURFACEINTEGRAL_HPP
 #define SURFACEINTEGRAL_HPP
+#include "../timediscretization/timeDiscretizationInterface.hpp"
 #include <memory>
 #include <vector>
 
 class AbstractRiemann;
 class AbstractBoundarycondition;
 
-class Surfaceintegral
+class Surfaceintegral : public TimeDiscretizationInterface
 {
 public:
     Surfaceintegral(float meshWidth, std::unique_ptr<AbstractRiemann> riemann,
                     std::unique_ptr<AbstractBoundarycondition> bc);
     std::vector<float>
     computeSurfaceintegral(const std::vector<float>& solutionVector);
+    std::vector<float>
+    computeRightHandSide(const std::vector<float>& solutionVector) override;
 
 private:
     std::vector<float> fillRightCellValuesAtUpperBoundaries(
@@ -26,6 +29,7 @@ private:
     std::vector<float>
     accumulateFluxes(const std::vector<float>& fluxLowerBoundary,
                      const std::vector<float>& fluxUpperBoundary);
+
     float m_meshWidth;
     std::unique_ptr<AbstractRiemann> m_riemann;
     std::unique_ptr<AbstractBoundarycondition> m_bc;

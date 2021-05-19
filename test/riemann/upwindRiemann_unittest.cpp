@@ -1,6 +1,6 @@
-#include "../../src/boundarycondition/dirichletBoundarycondition.hpp"
+#include "../../src/boundarycondition/dirichletBoundarycondition/dirichletBoundarycondition.hpp"
 #include "../../src/equation/advectionEquation/advectionEquation.hpp"
-#include "../../src/riemann/upwindRiemann.hpp"
+#include "../../src/riemann/upwindRiemann/upwindRiemann.hpp"
 #include "gmock/gmock.h"
 #include <numeric>
 
@@ -9,40 +9,43 @@ using namespace ::testing;
 class UpwindRiemannTest : public Test
 {
 public:
-    void fillSolutionWithIncreasingNumbers()
-    {
-        std::iota(m_testSolution.begin(), m_testSolution.end(), 1.);
-    }
+    std::vector<float> m_testLeftBoundaryValue = std::vector<float>(20, 2.);
+    std::vector<float> m_testRightBoundaryValue = std::vector<float>(20, 0.);
+};
 
-    const float m_testAdvectionVelocity = 1.;
-    int m_testNumberOfCells = 20;
-    const float m_testMeshWidth = 0.5;
-    std::vector<float> m_testSolution =
-        std::vector<float>(m_testNumberOfCells, 0.);
-    DirichletBoundarycondition m_testDirichlet{};
-    AdvectionEquation m_testAdvectionEquation{m_testAdvectionVelocity};
+TEST_F(UpwindRiemannTest, CorrectNumericalFluxForPositiveAdvectionVelocity)
+{
+    AdvectionEquation m_testAdvectionEquation{1.};
     UpwindRiemann m_testUpwind{
         std::make_unique<AdvectionEquation>(m_testAdvectionEquation)};
-};
 
-TEST_F(UpwindRiemannTest, IfZeroSolutionFluxIsZero)
-{
-    std::vector<float> numericalFlux =
-        m_testUpwind.numericalFlux(m_testSolution, m_testSolution);
-    ASSERT_THAT(numericalFlux, ElementsAreArray(m_testSolution));
-};
+    std::vector<float> numericalFlux = m_testUpwind.numericalFlux(
+        m_testLeftBoundaryValue, m_testRightBoundaryValue);
 
-TEST_F(UpwindRiemannTest, CorrectFluxWithCorrectDirichletBoundaryCondition)
-{
-    fillSolutionWithIncreasingNumbers();
-    std::vector<float> numericalFlux =
-        m_testUpwind.numericalFlux(m_testSolution, m_testSolution);
-
-    std::vector<float> expectedFlux(m_testNumberOfCells, -1.);
+    std::vector<float> expectedFlux(m_testLeftBoundaryValue);
     std::transform(expectedFlux.begin(), expectedFlux.end(),
-                   expectedFlux.begin(), [this](auto& elem) {
-                       return elem * m_testAdvectionVelocity *
-                              (1. / m_testMeshWidth);
+                   expectedFlux.begin(),
+                   [&m_testAdvectionEquation](auto& elem) {
+                       return elem * m_testAdvectionEquation.getSignalSpeed();
+                   });
+
+    ASSERT_THAT(numericalFlux, ElementsAreArray(expectedFlux));
+};
+
+TEST_F(UpwindRiemannTest, CorrectNumericalFluxForNegativeAdvectionVelocity)
+{
+    AdvectionEquation m_testAdvectionEquation{-1.};
+    UpwindRiemann m_testUpwind{
+        std::make_unique<AdvectionEquation>(m_testAdvectionEquation)};
+
+    std::vector<float> numericalFlux = m_testUpwind.numericalFlux(
+        m_testLeftBoundaryValue, m_testRightBoundaryValue);
+
+    std::vector<float> expectedFlux(m_testRightBoundaryValue);
+    std::transform(expectedFlux.begin(), expectedFlux.end(),
+                   expectedFlux.begin(),
+                   [&m_testAdvectionEquation](auto& elem) {
+                       return elem * m_testAdvectionEquation.getSignalSpeed();
                    });
 
     ASSERT_THAT(numericalFlux, ElementsAreArray(expectedFlux));

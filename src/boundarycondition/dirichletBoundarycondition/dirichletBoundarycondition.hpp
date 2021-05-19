@@ -1,6 +1,6 @@
 #ifndef DIRICHLETBOUNDARYCONDITION_HPP
 #define DIRICHLETBOUNDARYCONDITION_HPP
-#include "abstractBoundarycondition.hpp"
+#include "../abstractBoundarycondition.hpp"
 
 class DirichletBoundarycondition : public AbstractBoundarycondition
 {

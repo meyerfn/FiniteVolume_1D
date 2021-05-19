@@ -1,7 +1,7 @@
 #ifndef UPWINDRIEMANN_HPP
 #define UPWINDRIEMANN_HPP
-#include "../equation/abstractEquation.hpp"
-#include "abstractRiemann.hpp"
+#include "../../equation/abstractEquation.hpp"
+#include "../abstractRiemann.hpp"
 #include <tuple>
 
 class UpwindRiemann : public AbstractRiemann

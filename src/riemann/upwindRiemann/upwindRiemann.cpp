@@ -1,5 +1,5 @@
 #include "upwindRiemann.hpp"
-#include "../equation/abstractEquation.hpp"
+#include "../../equation/abstractEquation.hpp"
 #include <algorithm>
 #include <functional>
 

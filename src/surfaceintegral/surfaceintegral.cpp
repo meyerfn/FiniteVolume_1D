@@ -83,3 +83,9 @@ Surfaceintegral::accumulateFluxes(const std::vector<float>& fluxLowerBoundary,
         [this](float elem) { return -1. * elem * (1. / m_meshWidth); });
     return surfaceintegral;
 }
+
+std::vector<float>
+Surfaceintegral::computeRightHandSide(const std::vector<float>& solutionVector)
+{
+    return computeSurfaceintegral(solutionVector);
+}

@@ -1,24 +1,24 @@
 #ifndef ABSTRACTTIMEDISCRETIZATION_HPP
 #define ABSTRACTTIMEDISCRETIZATION_HPP
-#include "../riemann/abstractRiemann.hpp"
+#include "timeDiscretizationInterface.hpp"
 #include <memory>
 
 class AbstractTimeDiscretization
 {
 public:
-    AbstractTimeDiscretization(float deltaT, unsigned int numberOfTimesteps,
-                               std::unique_ptr<AbstractRiemann> riemann);
-    virtual ~AbstractTimeDiscretization() = default;
-    virtual void timestep(std::vector<float>& solutionVector) = 0;
-    virtual unsigned int getNumberOfTimesteps() const
+    AbstractTimeDiscretization(
+        float deltaT,
+        std::unique_ptr<TimeDiscretizationInterface> rightHandSide)
+        : m_deltaT(deltaT), m_rightHandSide(std::move(rightHandSide))
     {
-        return m_numberOfTimesteps;
     }
 
+    virtual ~AbstractTimeDiscretization() = default;
+    virtual void timestep(std::vector<float>& solutionVector) = 0;
+
 protected:
-    std::unique_ptr<AbstractRiemann> m_riemann;
+    std::unique_ptr<TimeDiscretizationInterface> m_rightHandSide;
     float m_deltaT;
-    unsigned int m_numberOfTimesteps;
 };
 
 #endif // ABSTRACTTIMEDISCRETIZATION_HPP

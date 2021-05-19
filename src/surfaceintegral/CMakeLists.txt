@@ -4,4 +4,4 @@ target_sources(Surfaceintegral
         surfaceintegral.cpp
         surfaceintegral.hpp
 )
-target_link_libraries(Surfaceintegral Boundaryconditions Riemann)
+target_link_libraries(Surfaceintegral Boundarycondition Riemann)

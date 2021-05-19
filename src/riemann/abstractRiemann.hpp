@@ -1,6 +1,7 @@
 #ifndef ABSTRACTRIEMANN_HPP
 #define ABSTRACTRIEMANN_HPP
 #include "../equation/abstractEquation.hpp"
+#include "../timediscretization/timeDiscretizationInterface.hpp"
 #include <memory>
 #include <vector>
 

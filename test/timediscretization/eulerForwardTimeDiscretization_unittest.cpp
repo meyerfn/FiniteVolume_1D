@@ -1,41 +1,35 @@
-#include "../../src/boundarycondition/dirichletBoundarycondition.hpp"
-#include "../../src/timediscretization/eulerForwardTimeDiscretization.hpp"
+#include "../../src/timediscretization/eulerForwardTimeDiscretization/eulerForwardTimeDiscretization.hpp"
+#include "../../src/timediscretization/timeDiscretizationInterface.hpp"
 #include "gmock/gmock.h"
 
 using namespace ::testing;
 
-class RiemannMock : public AbstractRiemann
+class RightHandSideMock : public TimeDiscretizationInterface
 {
 public:
-    RiemannMock()
-        : AbstractRiemann(1.0F, 0.5F,
-                          std::make_unique<DirichletBoundarycondition>()){};
-    MOCK_METHOD(std::vector<float>, numericalFlux,
-                (const std::vector<float>& solutionVector,
-                 const std::vector<float>& solutionVector),
-                (override));
+    MOCK_METHOD(std::vector<float>, computeRightHandSide,
+                (const std::vector<float>& solutionVector), (override));
 };
 
 class EulerForwardTest : public Test
 {
 protected:
-    float m_testDeltaT = 0.1F;
-    unsigned int m_testNumberOfTimesteps = 10;
+    float m_testDeltaT = 0.1;
 };
 
-TEST_F(EulerForwardTest, PerformOneTimeStep)
+TEST_F(EulerForwardTest, PerformOneEulerTimeStepWhenRightHandSideIsIdentity)
 {
-    auto riemann = std::make_unique<RiemannMock>();
     std::vector<float> solutionVector{1.};
     auto expectedSolution =
         solutionVector[0] + m_testDeltaT * solutionVector[0];
 
-    ON_CALL(*riemann, numericalFlux(solutionVector, solutionVector))
+    auto rhs = std::make_unique<RightHandSideMock>();
+    ON_CALL(*rhs, computeRightHandSide(solutionVector))
         .WillByDefault(Invoke(
             [](std::vector<float> solutionVector) { return solutionVector; }));
 
-    EulerForwardTimeDiscretization m_testEulerForwardTimeDisc(
-        m_testDeltaT, m_testNumberOfTimesteps, std::move(riemann));
+    EulerForwardTimeDiscretization m_testEulerForwardTimeDisc(m_testDeltaT,
+                                                              std::move(rhs));
     m_testEulerForwardTimeDisc.timestep(solutionVector);
 
     ASSERT_THAT(solutionVector, Each(expectedSolution));
