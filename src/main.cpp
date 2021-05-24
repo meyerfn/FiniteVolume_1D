@@ -1,12 +1,4 @@
-#include "boundarycondition/dirichletBoundarycondition/dirichletBoundarycondition.hpp"
-#include "equation/advectionEquation/advectionEquation.hpp"
-#include "initialcondition/initialcondition.hpp"
-#include "mesh/mesh.hpp"
 #include "parameters/parameters.hpp"
-#include "riemann/upwindRiemann/upwindRiemann.hpp"
-#include "surfaceintegral/surfaceintegral.hpp"
-#include "timediscretization/eulerForwardTimeDiscretization/eulerForwardTimeDiscretization.hpp"
-
 #include "simulator/simulator.hpp"
 
 using namespace Parameters;
