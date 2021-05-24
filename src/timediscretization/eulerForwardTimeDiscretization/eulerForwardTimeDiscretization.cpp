@@ -2,8 +2,9 @@
 #include <algorithm>
 
 EulerForwardTimeDiscretization::EulerForwardTimeDiscretization(
-    float deltaT, std::unique_ptr<TimeDiscretizationInterface> rightHandSide)
-    : AbstractTimeDiscretization(deltaT, std::move(rightHandSide))
+    float deltaT, unsigned int numberOfTimesteps,
+    std::shared_ptr<TimeDiscretizationInterface> rightHandSide)
+    : AbstractTimeDiscretization(deltaT, numberOfTimesteps, rightHandSide)
 {
 }
 

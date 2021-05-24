@@ -10,8 +10,9 @@ class AbstractBoundarycondition;
 class Surfaceintegral : public TimeDiscretizationInterface
 {
 public:
-    Surfaceintegral(float meshWidth, std::unique_ptr<AbstractRiemann> riemann,
-                    std::unique_ptr<AbstractBoundarycondition> bc);
+    Surfaceintegral(
+        float meshWidth, std::shared_ptr<AbstractRiemann> riemann,
+        std::shared_ptr<AbstractBoundarycondition> boundarycondition);
     std::vector<float>
     computeSurfaceintegral(const std::vector<float>& solutionVector);
     std::vector<float>
@@ -31,7 +32,7 @@ private:
                      const std::vector<float>& fluxUpperBoundary);
 
     float m_meshWidth;
-    std::unique_ptr<AbstractRiemann> m_riemann;
-    std::unique_ptr<AbstractBoundarycondition> m_bc;
+    std::shared_ptr<AbstractRiemann> m_riemann;
+    std::shared_ptr<AbstractBoundarycondition> m_boundarycondition;
 };
 #endif // SURFACEINTEGRAL_HPP

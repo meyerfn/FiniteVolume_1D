@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <functional>
 
-UpwindRiemann::UpwindRiemann(std::unique_ptr<AbstractEquation> equation)
-    : AbstractRiemann(std::move(equation))
+UpwindRiemann::UpwindRiemann(std::shared_ptr<AbstractEquation> equation)
+    : AbstractRiemann(equation)
 {
 }
 

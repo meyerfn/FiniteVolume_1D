@@ -10,8 +10,8 @@ class AbstractEquation;
 class AbstractRiemann
 {
 public:
-    AbstractRiemann(std::unique_ptr<AbstractEquation> equation)
-        : m_equation(std::move(equation))
+    AbstractRiemann(std::shared_ptr<AbstractEquation> equation)
+        : m_equation(equation)
     {
     }
     virtual ~AbstractRiemann() = default;
@@ -20,7 +20,7 @@ public:
                   const std::vector<float>& rightCellValues) const = 0;
 
 protected:
-    std::unique_ptr<AbstractEquation> m_equation;
+    std::shared_ptr<AbstractEquation> m_equation;
 };
 
 #endif // ABSTRACTRIEMANN_HPP

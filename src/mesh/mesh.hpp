@@ -4,6 +4,7 @@
 class Mesh
 {
 public:
+    Mesh() = default;
     Mesh(unsigned int numberOfCells, float leftBoundary, float rightBoundary);
     float getMeshWidth() const { return m_meshWidth; }
     std::vector<float> getMidPointsOfMesh() const { return m_midPointMesh; }

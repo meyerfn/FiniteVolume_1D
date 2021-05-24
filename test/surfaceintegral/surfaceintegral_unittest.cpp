@@ -12,14 +12,14 @@ class SurfaceintegralTest : public Test
 public:
     float m_testMeshWidth{0.5};
     float m_testAdvectionVelocity{1.};
-    std::unique_ptr<DirichletBoundarycondition> m_testBc =
-        std::make_unique<DirichletBoundarycondition>();
-    std::unique_ptr<AdvectionEquation> m_testEquation =
-        std::make_unique<AdvectionEquation>(1.);
-    std::unique_ptr<UpwindRiemann> m_testRiemann =
-        std::make_unique<UpwindRiemann>(std::move(m_testEquation));
-    Surfaceintegral m_testsurfaceintegral{
-        m_testMeshWidth, std::move(m_testRiemann), std::move(m_testBc)};
+    std::shared_ptr<DirichletBoundarycondition> m_testBc =
+        std::make_shared<DirichletBoundarycondition>();
+    std::shared_ptr<AdvectionEquation> m_testEquation =
+        std::make_shared<AdvectionEquation>(1.);
+    std::shared_ptr<UpwindRiemann> m_testRiemann =
+        std::make_shared<UpwindRiemann>(m_testEquation);
+    Surfaceintegral m_testsurfaceintegral{m_testMeshWidth, m_testRiemann,
+                                          m_testBc};
 };
 
 TEST_F(SurfaceintegralTest, IfSolutionIsZeroSurfaceIntegralIsZero)

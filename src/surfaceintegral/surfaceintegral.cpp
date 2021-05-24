@@ -3,10 +3,11 @@
 #include "../riemann/abstractRiemann.hpp"
 #include <algorithm>
 
-Surfaceintegral::Surfaceintegral(float meshWidth,
-                                 std::unique_ptr<AbstractRiemann> riemann,
-                                 std::unique_ptr<AbstractBoundarycondition> bc)
-    : m_meshWidth(meshWidth), m_riemann(std::move(riemann)), m_bc(std::move(bc))
+Surfaceintegral::Surfaceintegral(
+    float meshWidth, std::shared_ptr<AbstractRiemann> riemann,
+    std::shared_ptr<AbstractBoundarycondition> boundarycondition)
+    : m_meshWidth(meshWidth), m_riemann(riemann),
+      m_boundarycondition(boundarycondition)
 {
 }
 
@@ -54,7 +55,7 @@ std::vector<float> Surfaceintegral::fillRightCellValuesAtUpperBoundaries(
                                        solutionVector.begin() + 1,
                                        solutionVector.end());
     rightCellValueUpperBoundary.push_back(
-        m_bc->computeBoundaryValues(solutionVector)[1]);
+        m_boundarycondition->computeBoundaryValues(solutionVector)[1]);
     return rightCellValueUpperBoundary;
 }
 
@@ -63,7 +64,7 @@ std::vector<float> Surfaceintegral::fillLeftCellValuesAtLowerBoundaries(
 {
     std::vector<float> leftCellValueLowerBoundary{};
     leftCellValueLowerBoundary.push_back(
-        m_bc->computeBoundaryValues(solutionVector)[0]);
+        m_boundarycondition->computeBoundaryValues(solutionVector)[0]);
     leftCellValueLowerBoundary.insert(leftCellValueLowerBoundary.begin() + 1,
                                       solutionVector.begin(),
                                       solutionVector.end() - 1);

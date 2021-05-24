@@ -17,7 +17,7 @@ TEST_F(UpwindRiemannTest, CorrectNumericalFluxForPositiveAdvectionVelocity)
 {
     AdvectionEquation m_testAdvectionEquation{1.};
     UpwindRiemann m_testUpwind{
-        std::make_unique<AdvectionEquation>(m_testAdvectionEquation)};
+        std::make_shared<AdvectionEquation>(m_testAdvectionEquation)};
 
     std::vector<float> numericalFlux = m_testUpwind.numericalFlux(
         m_testLeftBoundaryValue, m_testRightBoundaryValue);
@@ -36,7 +36,7 @@ TEST_F(UpwindRiemannTest, CorrectNumericalFluxForNegativeAdvectionVelocity)
 {
     AdvectionEquation m_testAdvectionEquation{-1.};
     UpwindRiemann m_testUpwind{
-        std::make_unique<AdvectionEquation>(m_testAdvectionEquation)};
+        std::make_shared<AdvectionEquation>(m_testAdvectionEquation)};
 
     std::vector<float> numericalFlux = m_testUpwind.numericalFlux(
         m_testLeftBoundaryValue, m_testRightBoundaryValue);

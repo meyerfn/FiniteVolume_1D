@@ -15,6 +15,7 @@ class EulerForwardTest : public Test
 {
 protected:
     float m_testDeltaT = 0.1;
+    unsigned int m_testNumberOfTimesteps = 1U;
 };
 
 TEST_F(EulerForwardTest, PerformOneEulerTimeStepWhenRightHandSideIsIdentity)
@@ -23,14 +24,14 @@ TEST_F(EulerForwardTest, PerformOneEulerTimeStepWhenRightHandSideIsIdentity)
     auto expectedSolution =
         solutionVector[0] + m_testDeltaT * solutionVector[0];
 
-    auto rhs_mock = std::make_unique<RightHandSideMock>();
+    auto rhs_mock = std::make_shared<RightHandSideMock>();
     EXPECT_CALL(*rhs_mock, computeRightHandSide(solutionVector));
     ON_CALL(*rhs_mock, computeRightHandSide(solutionVector))
         .WillByDefault(Invoke(
             [](std::vector<float> solutionVector) { return solutionVector; }));
 
     EulerForwardTimeDiscretization m_testEulerForwardTimeDisc(
-        m_testDeltaT, std::move(rhs_mock));
+        m_testDeltaT, m_testNumberOfTimesteps, rhs_mock);
     m_testEulerForwardTimeDisc.timestep(solutionVector);
 
     ASSERT_THAT(solutionVector, Each(expectedSolution));

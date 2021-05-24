@@ -1,3 +1,5 @@
+#ifndef OUTPUTWRITER_HPP
+#define OUTPUTWRITER_HPP
 #include <fstream>
 #include <vector>
 
@@ -14,3 +16,4 @@ void writeSolutionToTextFile(const std::vector<float>& solution)
     file.close();
 }
 } // namespace OutputWriter
+#endif // OUTPUTWRITER_HPP

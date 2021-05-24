@@ -6,8 +6,8 @@ class EulerForwardTimeDiscretization : public AbstractTimeDiscretization
 {
 public:
     EulerForwardTimeDiscretization(
-        float deltaT,
-        std::unique_ptr<TimeDiscretizationInterface> rightHandSide);
+        float deltaT, unsigned int numberOfTimesteps,
+        std::shared_ptr<TimeDiscretizationInterface> rightHandSide);
     ~EulerForwardTimeDiscretization() = default;
     void timestep(std::vector<float>& solutionVector) override;
 };

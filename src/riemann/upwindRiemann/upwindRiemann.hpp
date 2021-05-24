@@ -7,7 +7,7 @@
 class UpwindRiemann : public AbstractRiemann
 {
 public:
-    UpwindRiemann(std::unique_ptr<AbstractEquation> equation);
+    UpwindRiemann(std::shared_ptr<AbstractEquation> equation);
     ~UpwindRiemann();
     std::vector<float>
     numericalFlux(const std::vector<float>& leftCellValues,
