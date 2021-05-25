@@ -13,4 +13,4 @@ target_sources(All_Unittests
                 timediscretization/eulerForwardTimeDiscretization_unittest.cpp
                 )
 target_link_libraries(All_Unittests Initialcondition Mesh Riemann Surfaceintegral 
-                        TimeDiscretization gmock gmock_main)
+                        TimeDiscretization AdvectionEquation Boundarycondition gmock gmock_main)

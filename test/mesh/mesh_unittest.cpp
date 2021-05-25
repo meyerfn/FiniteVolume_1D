@@ -20,17 +20,21 @@ protected:
     std::vector<float> expectedMeshPoints{};
 };
 
-TEST_F(MeshTest, IfMeshWidthIsCorrectlyComputed)
+TEST_F(MeshTest, MeshWidthIsCorrectlyComputed)
 {
-    auto expectedH = 1. / 20;
+    auto expectedMeshWidth = 1. / 20;
+
     Mesh mesh{numberOfCells, leftBoundary, rightBoundary};
-    ASSERT_THAT(mesh.getMeshWidth(), FloatEq(expectedH));
+
+    ASSERT_THAT(mesh.getMeshWidth(), FloatEq(expectedMeshWidth));
 };
 
-TEST_F(MeshTest, IfMeshPointsAreComputedCorrectly)
+TEST_F(MeshTest, MidPointsOfMeshAreCorrectlyComputed)
 {
     fillExpectedMeshPoints();
+
     Mesh mesh{numberOfCells, leftBoundary, rightBoundary};
+
     ASSERT_THAT(mesh.getMidPointsOfMesh(),
                 ElementsAreArray(expectedMeshPoints));
 };

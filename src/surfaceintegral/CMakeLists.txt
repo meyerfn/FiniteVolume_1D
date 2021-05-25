@@ -1,7 +1,6 @@
-ADD_LIBRARY(Surfaceintegral)
+add_library(Surfaceintegral)
 target_sources(Surfaceintegral
     PRIVATE
         surfaceintegral.cpp
         surfaceintegral.hpp
 )
-target_link_libraries(Surfaceintegral Boundarycondition Riemann)

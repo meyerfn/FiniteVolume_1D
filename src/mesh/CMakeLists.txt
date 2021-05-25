@@ -1,4 +1,4 @@
-ADD_LIBRARY(Mesh)
+add_library(Mesh)
 target_sources(Mesh
     PRIVATE
         mesh.cpp

@@ -6,6 +6,8 @@ AdvectionEquation::AdvectionEquation(float advectionVelocity)
 {
 }
 
+AdvectionEquation::~AdvectionEquation() {}
+
 std::vector<float>
 AdvectionEquation::getFlux(const std::vector<float>& values) const
 {

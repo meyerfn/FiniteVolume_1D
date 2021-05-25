@@ -1,7 +1,6 @@
-ADD_LIBRARY(Riemann)
-target_sources(Riemann
+add_library(UpwindRiemann)
+target_sources(UpwindRiemann
     PRIVATE
         upwindRiemann.cpp
         upwindRiemann.hpp
 )
-target_link_libraries(Riemann AdvectionEquation)

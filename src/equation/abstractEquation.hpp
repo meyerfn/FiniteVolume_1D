@@ -4,6 +4,7 @@
 class AbstractEquation
 {
 public:
+    virtual ~AbstractEquation(){};
     virtual std::vector<float>
     getFlux(const std::vector<float>& values) const = 0;
     virtual float getSignalSpeed() const = 0;

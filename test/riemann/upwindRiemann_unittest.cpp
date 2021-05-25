@@ -1,4 +1,3 @@
-#include "../../src/boundarycondition/dirichletBoundarycondition/dirichletBoundarycondition.hpp"
 #include "../../src/equation/advectionEquation/advectionEquation.hpp"
 #include "../../src/riemann/upwindRiemann/upwindRiemann.hpp"
 #include "gmock/gmock.h"

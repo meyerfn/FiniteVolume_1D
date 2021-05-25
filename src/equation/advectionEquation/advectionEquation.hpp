@@ -5,6 +5,7 @@ class AdvectionEquation : public AbstractEquation
 {
 public:
     AdvectionEquation(float advectionVelocity);
+    ~AdvectionEquation();
     std::vector<float> getFlux(const std::vector<float>& values) const override;
     float getSignalSpeed() const override;
 

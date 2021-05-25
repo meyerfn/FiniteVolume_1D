@@ -1,4 +1,4 @@
-ADD_LIBRARY(Boundarycondition)
+add_library(Boundarycondition)
 target_sources(Boundarycondition
     PRIVATE
     dirichletBoundarycondition.cpp

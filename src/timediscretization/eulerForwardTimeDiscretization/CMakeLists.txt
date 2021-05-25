@@ -1,7 +1,6 @@
-ADD_LIBRARY(TimeDiscretization)
+add_library(TimeDiscretization)
 target_sources(TimeDiscretization
     PRIVATE
     eulerForwardTimeDiscretization.hpp
     eulerForwardTimeDiscretization.cpp
 )
-target_link_libraries(TimeDiscretization Riemann Boundarycondition) 

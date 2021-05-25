@@ -1,4 +1,4 @@
-ADD_LIBRARY(AdvectionEquation)
+add_library(AdvectionEquation)
 target_sources(AdvectionEquation
     PRIVATE
     advectionEquation.cpp

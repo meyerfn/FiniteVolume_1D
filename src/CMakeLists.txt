@@ -8,5 +8,4 @@ add_subdirectory(${SOURCE_DIR}/surfaceintegral)
 add_subdirectory(${SOURCE_DIR}/timediscretization)
 
 add_executable(main main.cpp)
-target_link_libraries(main Boundarycondition AdvectionEquation Initialcondition Mesh
-                        Riemann Surfaceintegral TimeDiscretization Simulator)
+target_link_libraries(main Simulator)

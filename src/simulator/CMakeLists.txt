@@ -1,4 +1,4 @@
-ADD_LIBRARY(Simulator)
+add_library(Simulator)
 target_sources(Simulator
     PRIVATE
         simulationBuilder.hpp
@@ -8,4 +8,4 @@ target_sources(Simulator
 )
 target_link_libraries(Simulator Mesh Boundarycondition 
                         AdvectionEquation Surfaceintegral TimeDiscretization
-                        Initialcondition)
+                        Initialcondition Riemann)

@@ -20,7 +20,7 @@ public:
         std::vector<float>(m_testNumberOfMeshpoints, 0.);
 };
 
-TEST_F(InitialConditionTest, TEST)
+TEST_F(InitialConditionTest, CorrectInitializationOfRectangularPulse)
 {
     InitialCondition ic{};
     auto initialcondition = ic.rectangularPulse(m_testMeshpoints);
